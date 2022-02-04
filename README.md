@@ -3,6 +3,9 @@
 
 注：libs文件夹里的new_sb.sql文件只适用于之前未使用过sourcebans的用户，若数据库中存在sourcebans的表，则不用替换
 
+# 安装方法
+将api/configs/database.php里的host, port, user, pass, db_name字段进行填写即可使用
+
 # 已完成部分
 
 - 夜间模式切换
