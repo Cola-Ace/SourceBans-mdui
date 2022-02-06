@@ -61,19 +61,27 @@
 		function __construct(){
 			$this->db = new Database;
 		}
-		function getBanList($list_rows, $page){
-			$result = $this->db->Query("SELECT * FROM sb_bans");
+		function getBanList($list_rows, $page, $desc = false){
+			if ($desc){
+				$result = $this->db->Query("SELECT * FROM sb_bans_copy1 ORDER BY bid DESC");
+			} else {
+				$result = $this->db->Query("SELECT * FROM sb_bans_copy1");
+			}
 			if ($result->num_rows > 0){
 				$start = $list_rows * ($page - 1);
 				$end = ($list_rows * $page) - 1;
 				$rows = 0;
 				$info = [];
 				while ($row = $result->fetch_assoc()){
+					$banned = true;
+					if ($row["RemovedBy"] != "" || ($row["length"] != 0 && $row["created"] + $row["length"] <= time())){
+						$banned = false;
+					}
 					if ($rows > $end){
 						break;
 					}
 					if ($rows >= $start){
-						$info[] = array("bid" => (int)$row["bid"], "steamid" => $row["authId"], "name" => $row["name"], "ip" => $row["ip"], "ban_time" => (int)$row["created"], "length" => (int)$row["length"], "reason" => $row["reason"], "remove_user" => $row["RemovedBy"], "remove_time" => (int)$row["RemovedOn"]);
+						$info[] = array("bid" => (int)$row["bid"], "steamid" => $row["authid"], "name" => $row["name"], "ip" => $row["ip"], "banned" => $banned, "ban_time" => (int)$row["created"], "length" => (int)$row["length"], "reason" => $row["reason"], "remove_user" => $row["RemovedBy"], "remove_time" => (int)$row["RemovedOn"]);
 					}
 					$rows++;
 				}
@@ -86,7 +94,7 @@
 			
 		}
 		function getBanCount(){
-			return $this->db->Query("SELECT * FROM sb_bans")->num_rows;
+			return $this->db->Query("SELECT * FROM sb_bans_copy1")->num_rows;
 		}
 	}
 	
@@ -96,7 +104,7 @@
 			$this->db = new Database;
 		}
 		function getCommonList($list_rows, $page){
-			$result = $this->db->Query("SELECT * FROM sb_comms");
+			$result = $this->db->Query("SELECT * FROM sb_comms_copy1");
 			if ($result->num_rows > 0){
 				$start = $list_rows * ($page - 1);
 				$end = ($list_rows * $page) - 1;
@@ -107,7 +115,7 @@
 						break;
 					}
 					if ($rows >= $start){
-						$info[] = array("cid" => (int)$row["bid"], "steamid" => $row["authId"], "name" => $row["name"], "ip" => $row["ip"], "ban_time" => (int)$row["created"], "length" => (int)$row["length"], "reason" => $row["reason"], "remove_user" => $row["RemovedBy"], "remove_time" => (int)$row["RemovedOn"]);
+						$info[] = array("cid" => (int)$row["bid"], "steamid" => $row["authid"], "name" => $row["name"], "ban_time" => (int)$row["created"], "length" => (int)$row["length"], "reason" => $row["reason"], "remove_user" => $row["RemovedBy"], "remove_time" => (int)$row["RemovedOn"]);
 					}
 					$rows++;
 				}
@@ -120,7 +128,7 @@
 			
 		}
 		function getCommonCount(){
-			return $this->db->Query("SELECT * FROM sb_comms")->num_rows;
+			return $this->db->Query("SELECT * FROM sb_comms_copy1")->num_rows;
 		}
 	}
 

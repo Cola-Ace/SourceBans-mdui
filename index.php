@@ -1,4 +1,5 @@
 <?php
+	date_default_timezone_set('PRC'); //Beijing time
     session_start();
     require __DIR__ . "/api/api.php";
 	
@@ -26,6 +27,16 @@
         <script>
 			function connectToServer(ip, port){
 				window.location.href = "steam://connect/" + ip + ":" + port;
+			}
+			function timestampToTime(timestamp) {
+			    var date = new Date(timestamp * 1000);
+			    var Y = date.getFullYear() + '-';
+			    var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+			    var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
+			    var h = (date.getHours() < 10 ? '0' + (date.getHours()) : date.getHours()) + ':';
+			    var m = (date.getMinutes() < 10 ? '0' + (date.getMinutes()) : date.getMinutes()) + ':';
+			    var s = (date.getSeconds() < 10 ? '0' + (date.getSeconds()) : date.getSeconds());
+			    return Y + M + D + h + m + s;
 			}
 			function showServerInfo(sid, players){
 				if (players <= 0){
@@ -264,12 +275,31 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>玩家名称</th>
-                                    <th>封禁进度</th>
+                                    <th>封禁状态</th>
                                     <th>解封时间</th>
                                 </tr>
                             </thead>
                             <tbody>
-
+								<?php
+									$list = $Ban->getBanList(5, 1, true);
+									if ($list["code"] == 0){
+										for ($i = 0; $i < 5; $i++): ?>
+										<tr>
+											<td><?php echo $list["data"][$i]["bid"]; ?></td>
+											<td><?php echo $list["data"][$i]["name"]; ?></td>
+											<td>
+												<div class="mdui-chip">
+													<span class="mdui-chip-icon mdui-color-<?php echo $list["data"][$i]["banned"] == true ? "amber":"green"; ?>">
+														<i class="mdui-icon material-icons"><?php echo $list["data"][$i]["banned"] == true ? "do_not_disturb_alt":"check"; ?></i>
+													</span>
+													<span class="mdui-chip-title"><?php echo $list["data"][$i]["banned"] == true ? "正在封禁":"已解禁"; ?></span>
+												</div>
+											</td>
+											<td><?php echo $list["data"][$i]["length"] == 0 ? "永久封禁":date("Y-m-d H:i:s", $list["data"][$i]["ban_time"] + $list["data"][$i]["length"]); ?></td>
+										</tr>
+										<?php endfor;
+									}
+								?>
                             </tbody>
                         </table>
                     </div>
@@ -282,12 +312,12 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>玩家名称</th>
-                                    <th>禁言进度</th>
+                                    <th>禁言状态</th>
                                     <th>解禁时间</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                
+								
                             </tbody>
                         </table>
                     </div>
