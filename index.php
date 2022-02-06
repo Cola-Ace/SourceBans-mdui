@@ -317,7 +317,26 @@
                                 </tr>
                             </thead>
                             <tbody>
-								
+                            	<?php
+                            		$list = $Common->getCommonList(5, 1, true);
+                            		if ($list["code"] == 0){
+                            			for ($i = 0; $i < 5; $i++): ?>
+                            			<tr>
+                            				<td><?php echo $list["data"][$i]["cid"]; ?></td>
+                            				<td><?php echo $list["data"][$i]["name"]; ?></td>
+                            				<td>
+                            					<div class="mdui-chip">
+                            						<span class="mdui-chip-icon mdui-color-<?php echo $list["data"][$i]["banned"] == true ? "amber":"green"; ?>">
+                            							<i class="mdui-icon material-icons"><?php echo $list["data"][$i]["banned"] == true ? "do_not_disturb_alt":"check"; ?></i>
+                            						</span>
+                            						<span class="mdui-chip-title"><?php echo $list["data"][$i]["banned"] == true ? "正在禁言":"已解禁"; ?></span>
+                            					</div>
+                            				</td>
+                            				<td><?php echo $list["data"][$i]["length"] == 0 ? "永久禁言":date("Y-m-d H:i:s", $list["data"][$i]["ban_time"] + $list["data"][$i]["length"]); ?></td>
+                            			</tr>
+                            			<?php endfor;
+                            		}
+                            	?>
                             </tbody>
                         </table>
                     </div>

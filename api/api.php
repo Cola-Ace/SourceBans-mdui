@@ -62,28 +62,20 @@
 			$this->db = new Database;
 		}
 		function getBanList($list_rows, $page, $desc = false){
+			$start = $list_rows * ($page - 1);
 			if ($desc){
-				$result = $this->db->Query("SELECT * FROM sb_bans_copy1 ORDER BY bid DESC");
+				$result = $this->db->Query("SELECT * FROM sb_bans_copy1 ORDER BY bid DESC LIMIT {$start},{$list_rows}");
 			} else {
-				$result = $this->db->Query("SELECT * FROM sb_bans_copy1");
+				$result = $this->db->Query("SELECT * FROM sb_bans_copy1 LIMIT {$start},{$list_rows}");
 			}
 			if ($result->num_rows > 0){
-				$start = $list_rows * ($page - 1);
-				$end = ($list_rows * $page) - 1;
-				$rows = 0;
 				$info = [];
 				while ($row = $result->fetch_assoc()){
 					$banned = true;
 					if ($row["RemovedBy"] != "" || ($row["length"] != 0 && $row["created"] + $row["length"] <= time())){
 						$banned = false;
 					}
-					if ($rows > $end){
-						break;
-					}
-					if ($rows >= $start){
-						$info[] = array("bid" => (int)$row["bid"], "steamid" => $row["authid"], "name" => $row["name"], "ip" => $row["ip"], "banned" => $banned, "ban_time" => (int)$row["created"], "length" => (int)$row["length"], "reason" => $row["reason"], "remove_user" => $row["RemovedBy"], "remove_time" => (int)$row["RemovedOn"]);
-					}
-					$rows++;
+					$info[] = array("bid" => (int)$row["bid"], "steamid" => $row["authid"], "name" => $row["name"], "ip" => $row["ip"], "banned" => $banned, "ban_time" => (int)$row["created"], "length" => (int)$row["length"], "reason" => $row["reason"], "remove_user" => $row["RemovedBy"], "remove_time" => (int)$row["RemovedOn"]);
 				}
 				return array("code" => 0, "msg" => "", "data" => $info);
 			} else {
@@ -94,7 +86,8 @@
 			
 		}
 		function getBanCount(){
-			return $this->db->Query("SELECT * FROM sb_bans_copy1")->num_rows;
+			$result = $this->db->Query("SELECT COUNT(*) FROM sb_bans_copy1")->fetch_assoc();
+			return $result["COUNT(*)"];
 		}
 	}
 	
@@ -103,21 +96,21 @@
 		function __construct(){
 			$this->db = new Database;
 		}
-		function getCommonList($list_rows, $page){
-			$result = $this->db->Query("SELECT * FROM sb_comms_copy1");
+		function getCommonList($list_rows, $page, $desc = false){
+			$start = $list_rows * ($page - 1);
+			if ($desc){
+				$result = $this->db->Query("SELECT * FROM sb_comms_copy1 ORDER BY bid DESC LIMIT {$start},{$list_rows}");
+			} else {
+				$result = $this->db->Query("SELECT * FROM sb_comms_copy1 LIMIT {$start},{$list_rows}");
+			}
 			if ($result->num_rows > 0){
-				$start = $list_rows * ($page - 1);
-				$end = ($list_rows * $page) - 1;
-				$rows = 0;
 				$info = [];
 				while ($row = $result->fetch_assoc()){
-					if ($rows > $end){
-						break;
+					$banned = true;
+					if ($row["RemovedBy"] != "" || ($row["length"] != 0 && $row["created"] + $row["length"] <= time())){
+						$banned = false;
 					}
-					if ($rows >= $start){
-						$info[] = array("cid" => (int)$row["bid"], "steamid" => $row["authid"], "name" => $row["name"], "ban_time" => (int)$row["created"], "length" => (int)$row["length"], "reason" => $row["reason"], "remove_user" => $row["RemovedBy"], "remove_time" => (int)$row["RemovedOn"]);
-					}
-					$rows++;
+					$info[] = array("cid" => (int)$row["bid"], "steamid" => $row["authid"], "name" => $row["name"], "banned" => $banned, "ban_time" => (int)$row["created"], "length" => (int)$row["length"], "reason" => $row["reason"], "remove_user" => $row["RemovedBy"], "remove_time" => (int)$row["RemovedOn"]);
 				}
 				return array("code" => 0, "msg" => "", "data" => $info);
 			} else {
@@ -128,7 +121,8 @@
 			
 		}
 		function getCommonCount(){
-			return $this->db->Query("SELECT * FROM sb_comms_copy1")->num_rows;
+			$result = $this->db->Query("SELECT COUNT(*) FROM sb_comms_copy1")->fetch_assoc();
+			return $result["COUNT(*)"];
 		}
 	}
 
