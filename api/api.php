@@ -64,9 +64,9 @@
 		function getBanList($list_rows, $page, $desc = false){
 			$start = $list_rows * ($page - 1);
 			if ($desc){
-				$result = $this->db->Query("SELECT * FROM sb_bans_copy1 ORDER BY bid DESC LIMIT {$start},{$list_rows}");
+				$result = $this->db->Query("SELECT * FROM sb_bans ORDER BY bid DESC LIMIT {$start},{$list_rows}");
 			} else {
-				$result = $this->db->Query("SELECT * FROM sb_bans_copy1 LIMIT {$start},{$list_rows}");
+				$result = $this->db->Query("SELECT * FROM sb_bans LIMIT {$start},{$list_rows}");
 			}
 			if ($result->num_rows > 0){
 				$info = [];
@@ -86,7 +86,7 @@
 			
 		}
 		function getBanCount(){
-			$result = $this->db->Query("SELECT COUNT(*) FROM sb_bans_copy1")->fetch_assoc();
+			$result = $this->db->Query("SELECT COUNT(*) FROM sb_bans")->fetch_assoc();
 			return $result["COUNT(*)"];
 		}
 	}
@@ -99,9 +99,9 @@
 		function getCommonList($list_rows, $page, $desc = false){
 			$start = $list_rows * ($page - 1);
 			if ($desc){
-				$result = $this->db->Query("SELECT * FROM sb_comms_copy1 ORDER BY bid DESC LIMIT {$start},{$list_rows}");
+				$result = $this->db->Query("SELECT * FROM sb_comms ORDER BY bid DESC LIMIT {$start},{$list_rows}");
 			} else {
-				$result = $this->db->Query("SELECT * FROM sb_comms_copy1 LIMIT {$start},{$list_rows}");
+				$result = $this->db->Query("SELECT * FROM sb_comms LIMIT {$start},{$list_rows}");
 			}
 			if ($result->num_rows > 0){
 				$info = [];
