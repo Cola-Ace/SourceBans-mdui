@@ -258,6 +258,13 @@
 													<button class="mdui-fab mdui-fab-mini mdui-ripple" id="btn_detail" mdui-tooltip="{content: '详细'}" onclick="showServerInfo($(this).parent().parent().attr('data-sid'), $(this).parent().parent().attr('data-players'))"><i class="mdui-icon material-icons">format_list_bulleted</i></button>
 												</td>
 											</tr>
+											<?php else: ?>
+											<tr>
+												<td>Error</td>
+												<td><?php echo $list["data"][$i]["msg"]; ?></td>
+												<td></td>
+												<td></td>
+											</tr>
 											<?php endif;
 										}
 									}
