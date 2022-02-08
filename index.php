@@ -264,6 +264,7 @@
 												<td><?php echo $list["data"][$i]["msg"]; ?></td>
 												<td></td>
 												<td></td>
+												<td></td>
 											</tr>
 											<?php endif;
 										}
