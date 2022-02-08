@@ -187,7 +187,7 @@
                             </div>
                         </div>
                         <div class="mdui-divider"></div>
-                        <div class="mdui-card-content" id="server_count"><?php echo $list["data"]["count"]; ?></div>
+                        <div class="mdui-card-content" id="server_count"><?php echo $list["count"]; ?></div>
                     </div>
                 </div>
                 <div class="mdui-col-xs-3">
@@ -198,7 +198,7 @@
                             </div>
                         </div>
                         <div class="mdui-divider"></div>
-                        <div class="mdui-card-content"><?php echo $list["data"]["online"]; ?></div>
+                        <div class="mdui-card-content"><?php echo $list["online"]; ?></div>
                     </div>
                 </div>
                 <div class="mdui-col-xs-3">
@@ -241,23 +241,25 @@
                             <tbody>
 								<?php
 									if ($list["code"] == 0){
-										for ($i = 0; $i < $list["data"]["count"]; $i++): ?>
-										<tr data-sid="<?php echo $list["data"]["data"][$i]["data"]["sid"] ?>" data-players="<?php echo $list["data"]["data"][$i]["data"]["players"]; ?>">
-											<td><?php echo $list["data"]["data"][$i]["data"]["sid"] ?></td>
-											<td data="hostname"><?php echo $list["data"]["data"][$i]["data"]["hostname"] ?></td>
-											<td data="map"><?php echo $list["data"]["data"][$i]["data"]["map"] ?></td>
-											<td>
-												<div class="mdui-chip">
-													<span class="mdui-chip-title"><?php echo $list["data"]["data"][$i]["data"]["players"] . " / " . $list["data"]["data"][$i]["data"]["maxPlayers"] ?></span>
-												</div>
-											</td>
-											<td>
-												<button class="mdui-fab mdui-fab-mini mdui-ripple" id="btn_join" mdui-tooltip="{content: '进入服务器'}" onclick="connectToServer('<?php echo $list["data"]["data"][$i]["data"]["ip"]; ?>', <?php echo $list["data"]["data"][$i]["data"]["port"]; ?>)"><i class="mdui-icon material-icons">flight_takeoff</i></button>
-												<button class="mdui-fab mdui-fab-mini mdui-ripple" id="btn_copy" mdui-tooltip="{content: '复制'}" data-clipboard-text="<?php echo "{$list['data']['data'][$i]['data']['ip']}:{$list['data']['data'][$i]['data']['port']}"; ?>"><i class="mdui-icon material-icons">content_copy</i></button>
-												<button class="mdui-fab mdui-fab-mini mdui-ripple" id="btn_detail" mdui-tooltip="{content: '详细'}" onclick="showServerInfo($(this).parent().parent().attr('data-sid'), $(this).parent().parent().attr('data-players'))"><i class="mdui-icon material-icons">format_list_bulleted</i></button>
-											</td>
-										</tr>
-										<?php endfor;
+										for ($i = 0; $i < $list["count"]; $i++){
+											if ($list["data"][$i]["code"] == 0): ?>	
+											<tr data-sid="<?php echo $list["data"][$i]["sid"]; ?>" data-players="<?php echo $list["data"][$i]["players"]; ?>">
+												<td><?php echo $list["data"][$i]["sid"] ?></td>
+												<td data="hostname"><?php echo $list["data"][$i]["hostname"] ?></td>
+												<td data="map"><?php echo $list["data"][$i]["map"] ?></td>
+												<td>
+													<div class="mdui-chip">
+														<span class="mdui-chip-title"><?php echo $list["data"][$i]["players"] . " / " . $list["data"][$i]["maxPlayers"] ?></span>
+													</div>
+												</td>
+												<td>
+													<button class="mdui-fab mdui-fab-mini mdui-ripple" id="btn_join" mdui-tooltip="{content: '进入服务器'}" onclick="connectToServer('<?php echo $list["data"][$i]["ip"]; ?>', <?php echo $list["data"][$i]["port"]; ?>)"><i class="mdui-icon material-icons">flight_takeoff</i></button>
+													<button class="mdui-fab mdui-fab-mini mdui-ripple" id="btn_copy" mdui-tooltip="{content: '复制'}" data-clipboard-text="<?php echo "{$list['data'][$i]['ip']}:{$list['data'][$i]['port']}"; ?>"><i class="mdui-icon material-icons">content_copy</i></button>
+													<button class="mdui-fab mdui-fab-mini mdui-ripple" id="btn_detail" mdui-tooltip="{content: '详细'}" onclick="showServerInfo($(this).parent().parent().attr('data-sid'), $(this).parent().parent().attr('data-players'))"><i class="mdui-icon material-icons">format_list_bulleted</i></button>
+												</td>
+											</tr>
+											<?php endif;
+										}
 									}
 								?>
                             </tbody>
@@ -342,29 +344,6 @@
                     </div>
                 </div>
             </div>
-			<!-- joke -->
-			<!--
-			<div class="mdui-row">
-				<div class="mdui-col-xs-2">
-					<label class="mdui-slider mdui-slider-discrete">
-						<input type="range" step="1" min="1" max="100" value="1" id="test">
-					</label>
-				</div>
-				<div class="mdui-col-xs-1">
-					<div class="mdui-textfield">
-						<input class="mdui-textfield-input" placeholder="Page" type="text" id="test-text">
-					</div>
-				</div>
-				<div class="mdui-col-xs-1">
-					<button class="mdui-btn mdui-btn-raised mdui-ripple" id="test-button">点击跳转</button>
-				</div>
-				<div class="mdui-col-xs-1">
-					<button class="mdui-btn mdui-btn-icon mdui-color-theme-accent mdui-ripple" id="test-button-add">
-						<i class="mdui-icon material-icons">add</i>
-					</button>
-				</div>
-			</div>
-			-->
         </div>
     </body>
 </html>

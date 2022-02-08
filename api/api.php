@@ -27,16 +27,16 @@
 						$this->Query->Connect($row["ip"], (int)$row["port"], 1, SourceQuery::SOURCE);
 						$info = $this->Query->GetInfo();
 						$online += $info["Players"];
-						$tmp = array("code" => 0, "msg" => "", "data" => array("sid" => (int)$row["sid"], "ip" => $row["ip"], "port" => (int)$row["port"], "hostname" => $info["HostName"], "map" => $info["Map"], "players" => $info["Players"], "maxPlayers" => $info["MaxPlayers"], "bots" => $info["Bots"]));
+						$tmp = array("code" => 0, "msg" => "", "sid" => (int)$row["sid"], "ip" => $row["ip"], "port" => (int)$row["port"], "hostname" => $info["HostName"], "map" => $info["Map"], "players" => $info["Players"], "maxPlayers" => $info["MaxPlayers"], "bots" => $info["Bots"]);
 					} catch (Exception $e){
-						$tmp = array("code" => -1, "msg" => $e->getMessage(), "data" => "");
+						$tmp = array("code" => -1, "msg" => $e->getMessage());
 					} finally {
 						$this->Query->Disconnect();
 					}
 					$list[] = $tmp;
 					$count++;
 				}
-				return array("code" => 0, "msg" => "", "data" => array("count" => $count, "online" => $online, "data" => $list));
+				return array("code" => 0, "msg" => "", "count" => $count, "online" => $online, "data" => $list);
 			}
         }
         function getServerInfo($sid){
@@ -121,7 +121,7 @@
 			
 		}
 		function getCommonCount(){
-			$result = $this->db->Query("SELECT COUNT(*) FROM sb_comms_copy1")->fetch_assoc();
+			$result = $this->db->Query("SELECT COUNT(*) FROM sb_comms")->fetch_assoc();
 			return $result["COUNT(*)"];
 		}
 	}
