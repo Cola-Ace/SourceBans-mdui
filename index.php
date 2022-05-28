@@ -20,11 +20,10 @@
  <script language="JavaScript">
 setTimeout(function(){location.reload()},20000); //指定1秒刷新一次
 </script>
-        <title>KodPlay</title>
         <link rel="stylesheet" href="https://jsd.kodplay.com/npm/mdui@1.0.2/dist/css/mdui.min.css">
         <script src="https://jsd.kodplay.com/npm/mdui@1.0.2/dist/js/mdui.min.js"></script>
-        <script src="https://jsd.kodplay.com/jquery/3.6.0/jquery.min.js"></script>
-        <script src="https://jsd.kodplay.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+        <script src="https://cdn.staticfile.org/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 		<script src="https://jsd.kodplay.com/npm/clipboard@2.0.8/dist/clipboard.min.js"></script>
 		  <link rel="stylesheet" href="/layui/css/layui.css"  media="all">
 
